@@ -1,57 +1,110 @@
-import type { ChordTypeAbbreviation, Note as NoteLetter, IntervalType, } from "./types"
+import type {
+  ChordTypeAbbreviation,
+  Note as NoteLetter,
+  IntervalType,
+  Octave,
+  NoteWithOctave,
+  IntervalAbbrevation,
+} from "./types";
+import {
+  addSemitones,
+  chords,
+  extractNote,
+  extractOctave,
+  intervalTypeToSemitones,
+  makeNoteWithOctave,
+} from "./utils";
 
+/**
+ *  @class Note
+ *  Note abstraction
+ *  ----
+ *  Defaults to C4, can be overriden
+ */
 export class Note {
-    private note: NoteLetter | undefined
+  private note: NoteLetter;
+  private octave: Octave;
 
-    getNote(): NoteLetter {
-        if (!this.note) {
-            throw new Error("Note is not set")
-        }
-        return this.note
+  constructor(note: NoteLetter = "C", octave: Octave = 4) {
+    this.note = note;
+    this.octave = octave;
+  }
+
+  getNote(): NoteLetter {
+    if (!this.note) {
+      throw new Error("Note is not set");
     }
+    return this.note;
+  }
 
-    fromLetter(note: NoteLetter): void {
-        this.note = note
+  getNoteWithOctave(): NoteWithOctave {
+    if (!this.note) {
+      throw new Error("Note is not set");
     }
+    return makeNoteWithOctave(this.note, this.octave);
+  }
 
-    fromInterval(note: Note, interval: IntervalType): void {
-        this.note = addSemitones(note, interval)
+  fromLetter(note: NoteLetter, octave: Octave = 4): Note {
+    this.note = note;
+    this.octave = octave;
+    return this;
+  }
+
+  fromNotewithOctave(note: NoteWithOctave): Note {
+    this.note = extractNote(note);
+    this.octave = extractOctave(note);
+    return this;
+  }
+
+  fromInterval(
+    note: NoteLetter,
+    interval: IntervalAbbrevation,
+    octave: Octave = 4
+  ): Note {
+    const noteWithOctave = makeNoteWithOctave(note, octave ?? 4);
+    const newNote = addSemitones(
+      noteWithOctave,
+      intervalTypeToSemitones[interval]
+    );
+    if (!newNote) throw new Error("Error building note from interval");
+    this.note = extractNote(newNote);
+    this.octave = extractOctave(newNote);
+    return this;
+  }
+
+  getChord(type: ChordTypeAbbreviation): Chord {
+    if (!this.note) {
+      throw new Error("Note is not set");
     }
-
-    getChord(type: ChordTypeAbbreviation): Chord {
-        if (!this.note) {
-            throw new Error("Note is not set")
-        }
-        return new Chord(this, type)
-    }
-
+    return new Chord(this.note, type);
+  }
 }
 
 class Chord {
-    private root: Note
-    private type: ChordTypeAbbreviation
-    notes: Note[]
+  private root: NoteLetter;
+  private type: ChordTypeAbbreviation;
 
-    constructor(root: Note, type: ChordTypeAbbreviation) {
-        this.root = root
-        this.type = type
-        this.notes = this.getNotes(root, type)
-    }
+  constructor(root: NoteLetter, type: ChordTypeAbbreviation) {
+    this.root = root;
+    this.type = type;
+  }
 
-    getRoot(): Note {
-        return this.root
-    }
+  getRoot(): NoteLetter {
+    return this.root;
+  }
 
-    getType(): ChordTypeAbbreviation {
-        return this.type
-    }
+  getType(): ChordTypeAbbreviation {
+    return this.type;
+  }
 
-    getNotes(root: Note, type: ChordTypeAbbreviation): Note[] {
-        const intervals = this.getIntervals(type)
-        return intervals.map(interval => new Note().fromInterval(interval, root))
-    }
+  getNotes(): NoteLetter[] {
+    const intervals = this.getIntervals(this.type);
+    return intervals.map((interval) =>
+      new Note().fromInterval(this.root, interval, 4).getNote()
+    );
+  }
 
-    getIntervals(type: ChordTypeAbbreviation): Interval[] {
-
-    }
+  getIntervals(type: ChordTypeAbbreviation): IntervalAbbrevation[] {
+    return chords[type];
+  }
 }
