@@ -104,3 +104,12 @@ export function addSemitones(
   const newNote = notes[Math.floor((noteIndex + semitones) % notes.length)];
   return `${newNote[0]}${newOctave}`;
 }
+
+
+export const pianoKeys: NoteWithOctave[] = Array.from({ length: 88 }, (_, i) => {
+  const baseNote = "A0" as NoteWithOctave
+  return addSemitones(baseNote, i) as NoteWithOctave
+});
+
+
+
