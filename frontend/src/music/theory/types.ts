@@ -1,4 +1,4 @@
-export type Note =
+export type NoteLetter =
   | "A"
   | "B"
   | "C"
@@ -6,22 +6,22 @@ export type Note =
   | "E"
   | "F"
   | "G"
-  | "A♭"
-  | "B♭"
-  | "D♭"
-  | "E♭"
-  | "G♭"
+  | "Ab"
+  | "Bb"
+  | "Db"
+  | "Eb"
+  | "Gb"
   | "A#"
   | "C#"
   | "D#"
   | "F#"
   | "G#";
 
-export type FlatNote = "A♭" | "B♭" | "C♭" | "D♭" | "E♭" | "F♭" | "G♭";
-export type SharpNote = "A#" | "B#" | "C#" | "D#" | "E#" | "F#" | "G#";
+export type FlatNoteLetter = "Ab" | "Bb" | "Cb" | "Db" | "Eb" | "Fb" | "Gb";
+export type SharpNoteLetter = "A#" | "B#" | "C#" | "D#" | "E#" | "F#" | "G#";
 
 export type Octave = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-export type NoteWithOctave = `${Note}${Octave}`;
+export type NoteWithOctave = `${NoteLetter}${Octave}`;
 
 type Triad = "major" | "minor" | "diminished" | "augmented";
 type TriadAbbreviation = "" | "m" | "dim" | "aug";
@@ -52,7 +52,7 @@ export type ChordTypeAbbreviation =
   | EleventhAbbreviation
   | ThirteenthAbbreviation;
 
-export type ChordNotation = `${Note}${ChordTypeAbbreviation}`;
+export type ChordNotation = `${NoteLetter}${ChordTypeAbbreviation}`;
 
 export type Interval = {
   name: string;

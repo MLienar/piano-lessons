@@ -1,7 +1,7 @@
 import { Chord } from "./chord";
 import type {
   ChordTypeAbbreviation,
-  Note as NoteLetter,
+  NoteLetter as NoteLetter,
   Octave,
   NoteWithOctave,
   IntervalAbbrevation,
@@ -33,7 +33,7 @@ export class Note {
     return this.note.includes("#")
   }
   isFlat(): boolean {
-    return this.note.includes("♭")
+    return this.note.includes("b")
   }
 
   isNatural(): boolean {

@@ -1,5 +1,5 @@
 import { Note } from "./note";
-import type { ChordTypeAbbreviation, IntervalAbbrevation, Note as NoteLetter } from "./types";
+import type { ChordTypeAbbreviation, IntervalAbbrevation, NoteLetter as NoteLetter } from "./types";
 import { chords } from "./utils";
 
 export class Chord {

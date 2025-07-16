@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
 
 import { PianoVisualizer } from '@/components/exercises/PianoVisualizer'
-import { Chord } from '@/music/theory/chord'
+import { CircleOfFifths } from '@/components/exercises/CircleOfFifths'
 
 export const Route = createFileRoute('/exercises')({
     component: ExercisesPage,
@@ -28,9 +28,15 @@ function ExercisesPage() {
                             <p className="text-gray-600 mb-6">
                                 Learn the circle of fifths for major keys. This fundamental concept helps you understand key signatures and chord progressions. Click on any key to see its details and the corresponding chord on the piano keyboard.
                             </p>
-                            <div style={{ height: '300px' }}>
 
-                                <PianoVisualizer chord={new Chord("C#", "m")} />
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div>
+                                    <CircleOfFifths />
+                                </div>
+
+                                <div style={{ height: '300px' }}>
+                                    <PianoVisualizer />
+                                </div>
                             </div>
                         </div>
                     </div>

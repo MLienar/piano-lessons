@@ -1,7 +1,7 @@
 import type {
   ChordTypeAbbreviation,
   IntervalAbbrevation,
-  Note,
+  NoteLetter,
   NoteWithOctave,
   Octave,
 } from "./types";
@@ -53,26 +53,27 @@ export const chords: Record<ChordTypeAbbreviation, IntervalAbbrevation[]> = {
   m13: ["", "m3", "P5", "m7", "m9", "11", "m13"],
   M13: ["", "M3", "P5", "M7", "M9", "11", "M13"],
 };
-const notes: Note[][] = [
+const notes: NoteLetter[][] = [
+  ["A"],
+  ["A#", "Bb"],
+  ["B"],
   ["C"],
-  ["C#", "D♭"],
+  ["C#", "Db"],
   ["D"],
-  ["D#", "E♭"],
+  ["D#", "Eb"],
   ["E"],
   ["F"],
-  ["F#", "G♭"],
+  ["F#", "Gb"],
   ["G"],
-  ["G#", "A♭"],
-  ["A"],
-  ["A#", "B♭"],
-  ["B"],
+  ["G#", "Ab"],
+
 ];
 
-function isNote(arg: any): arg is Note {
+function isNote(arg: any): arg is NoteLetter {
   return Boolean(notes.find((n) => n.includes(arg)));
 }
 
-export function extractNote(note: NoteWithOctave): Note {
+export function extractNote(note: NoteWithOctave): NoteLetter {
   const removed = note.slice(0, -1);
   if (!isNote(removed)) throw new Error("Incorrect note provided");
   return removed;
@@ -88,7 +89,7 @@ function isOctave(arg: any): arg is Octave {
   return !isNaN(arg) && arg <= 12 && arg >= 0;
 }
 
-export function makeNoteWithOctave(note: Note, octave: Octave): NoteWithOctave {
+export function makeNoteWithOctave(note: NoteLetter, octave: Octave): NoteWithOctave {
   return `${note}${octave}`;
 }
 
